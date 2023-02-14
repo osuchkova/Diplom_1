@@ -3,10 +3,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import praktikum.Bun;
-import praktikum.Burger;
-import praktikum.Ingredient;
-import praktikum.IngredientType;
+import praktikum.*;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,23 +13,26 @@ import static org.junit.Assert.assertEquals;
 public class BurgerIngredientTest {
 
     Burger burger;
-    Ingredient filling;
-    Ingredient sauce;
+    Database database;
+    List<Ingredient> ingredients;
     @Mock
-    Bun bun;
+    Bun buns;
 
     @Before
     public void setUp() {
         burger = new Burger();
-        filling = new Ingredient(IngredientType.FILLING, "cutlet", 100);
-        sauce = new Ingredient(IngredientType.SAUCE, "sour cream", 200);
-        burger.addIngredient(sauce);
-        burger.addIngredient(filling);
+        database = new Database();
+        ingredients = database.availableIngredients();
+        burger.setBuns(buns);
+        burger.addIngredient(ingredients.get(1));
+        burger.addIngredient(ingredients.get(4));
+        burger.addIngredient(ingredients.get(3));
     }
 
     @Test
     public void shouldAddIngredient() {
-        String expected = "cutlet";
+        burger.addIngredient(ingredients.get(5));
+        String expected = "sausage";
         String actual = burger.ingredients.get(burger.ingredients.size() - 1).getName();
         assertEquals("Ингредиенты должны совпадать", expected, actual);
     }
@@ -38,7 +40,7 @@ public class BurgerIngredientTest {
     @Test
     public void shouldRemoveIngredient() {
         burger.removeIngredient(burger.ingredients.size() - 1);
-        String expected = "sour cream";
+        String expected = "dinosaur";
         String actual = burger.ingredients.get(burger.ingredients.size() - 1).getName();
         assertEquals("Ингредиенты должны совпадать", expected, actual);
     }

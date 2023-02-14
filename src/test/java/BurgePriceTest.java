@@ -2,35 +2,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import praktikum.Bun;
-import praktikum.Burger;
-import praktikum.Ingredient;
-import praktikum.IngredientType;
+import praktikum.*;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BurgePriceTest {
 
-    Burger burger;
-    Ingredient filling;
-    Ingredient sauce;
-    Bun bun;
-
-    @Before
-    public void setUp() {
-        burger = new Burger();
-        bun = new Bun("black bun", 100);
-        filling = new Ingredient(IngredientType.FILLING, "cutlet", 100);
-        sauce = new Ingredient(IngredientType.SAUCE, "sour cream", 200);
-        burger.addIngredient(sauce);
-        burger.addIngredient(filling);
-    }
-
     @Test
     public void shouldGetBurgerPrice() {
-        burger.setBuns(bun);
-        float expected = 500F;
+        Burger burger = new Burger();
+        Database database = new Database();
+        List<Bun> buns = database.availableBuns();
+        List<Ingredient> ingredients = database.availableIngredients();
+        burger.setBuns(buns.get(0));
+        burger.addIngredient(ingredients.get(1));
+        burger.addIngredient(ingredients.get(4));
+        burger.addIngredient(ingredients.get(3));
+        burger.addIngredient(ingredients.get(5));
+        float expected = 1000F;
         float actual = burger.getPrice();
         assertEquals("Цены должны совпадать", expected, actual, 0.01);
     }
